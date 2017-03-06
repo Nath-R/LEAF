@@ -1,0 +1,436 @@
+@prefix : <file:/C:/Users/ramol_na/Documents/workspace/LEAF/res/onto/res/onto.owl#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix xml: <http://www.w3.org/XML/1998/namespace> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@base <http://res/onto/onto.owl> .
+
+<http://res/onto/onto.owl> rdf:type owl:Ontology .
+
+
+#################################################################
+#
+#    Object Properties
+#
+#################################################################
+
+
+###  file:/C:/Users/ramol_na/Documents/workspace/LEAF/res/onto/res/onto.owl#contains
+
+:contains rdf:type owl:ObjectProperty ;
+          
+          rdfs:domain :Container ;
+          
+          rdfs:range :Entity .
+
+
+
+###  file:/C:/Users/ramol_na/Documents/workspace/LEAF/res/onto/res/onto.owl#hasPosition
+
+:hasPosition rdf:type owl:ObjectProperty ;
+             
+             rdfs:domain :Entity ;
+             
+             rdfs:range :RelativePos .
+
+
+
+###  file:/C:/Users/ramol_na/Documents/workspace/LEAF/res/onto/res/onto.owl#inFrontOf
+
+:inFrontOf rdf:type owl:ObjectProperty ;
+           
+           rdfs:domain :Entity ;
+           
+           rdfs:range :Entity .
+
+
+
+###  file:/C:/Users/ramol_na/Documents/workspace/LEAF/res/onto/res/onto.owl#isCloseTo
+
+:isCloseTo rdf:type owl:ObjectProperty ;
+           
+           rdfs:range :Entity ;
+           
+           rdfs:domain :Entity .
+
+
+
+###  file:/C:/Users/ramol_na/Documents/workspace/LEAF/res/onto/res/onto.owl#isDoing
+
+:isDoing rdf:type owl:ObjectProperty ;
+         
+         rdfs:range :Activity ;
+         
+         rdfs:domain :Person .
+
+
+
+###  file:/C:/Users/ramol_na/Documents/workspace/LEAF/res/onto/res/onto.owl#isLocatedIn
+
+:isLocatedIn rdf:type owl:ObjectProperty ;
+             
+             rdfs:domain :Entity ;
+             
+             rdfs:range :Room .
+
+
+
+
+
+#################################################################
+#
+#    Data properties
+#
+#################################################################
+
+
+###  file:/C:/Users/ramol_na/Documents/workspace/LEAF/res/onto/res/onto.owl#hasName
+
+:hasName rdf:type owl:DatatypeProperty ;
+         
+         rdfs:domain :Activity ,
+                     :Entity ;
+         
+         rdfs:range xsd:string .
+
+
+
+###  file:/C:/Users/ramol_na/Documents/workspace/LEAF/res/onto/res/onto.owl#x
+
+:x rdf:type owl:DatatypeProperty ;
+   
+   rdfs:domain :RelativePos ;
+   
+   rdfs:range xsd:int .
+
+
+
+###  file:/C:/Users/ramol_na/Documents/workspace/LEAF/res/onto/res/onto.owl#y
+
+:y rdf:type owl:DatatypeProperty ;
+   
+   rdfs:domain :RelativePos ;
+   
+   rdfs:range xsd:int .
+
+
+
+
+
+#################################################################
+#
+#    Classes
+#
+#################################################################
+
+
+###  file:/C:/Users/ramol_na/Documents/workspace/LEAF/res/onto/res/onto.owl#Activity
+
+:Activity rdf:type owl:Class ;
+          
+          rdfs:subClassOf :ContextData .
+
+
+
+###  file:/C:/Users/ramol_na/Documents/workspace/LEAF/res/onto/res/onto.owl#Bedroom
+
+:Bedroom rdf:type owl:Class ;
+         
+         rdfs:subClassOf :Room .
+
+
+
+###  file:/C:/Users/ramol_na/Documents/workspace/LEAF/res/onto/res/onto.owl#Bottle
+
+:Bottle rdf:type owl:Class ;
+        
+        rdfs:subClassOf :Object .
+
+
+
+###  file:/C:/Users/ramol_na/Documents/workspace/LEAF/res/onto/res/onto.owl#Chair
+
+:Chair rdf:type owl:Class ;
+       
+       rdfs:subClassOf :Object .
+
+
+
+###  file:/C:/Users/ramol_na/Documents/workspace/LEAF/res/onto/res/onto.owl#Container
+
+:Container rdf:type owl:Class ;
+           
+           rdfs:subClassOf :Entity .
+
+
+
+###  file:/C:/Users/ramol_na/Documents/workspace/LEAF/res/onto/res/onto.owl#ContextData
+
+:ContextData rdf:type owl:Class .
+
+
+
+###  file:/C:/Users/ramol_na/Documents/workspace/LEAF/res/onto/res/onto.owl#Cupboard
+
+:Cupboard rdf:type owl:Class ;
+          
+          rdfs:subClassOf :Container .
+
+
+
+###  file:/C:/Users/ramol_na/Documents/workspace/LEAF/res/onto/res/onto.owl#Door
+
+:Door rdf:type owl:Class ;
+      
+      rdfs:subClassOf :Object .
+
+
+
+###  file:/C:/Users/ramol_na/Documents/workspace/LEAF/res/onto/res/onto.owl#Entity
+
+:Entity rdf:type owl:Class .
+
+
+
+###  file:/C:/Users/ramol_na/Documents/workspace/LEAF/res/onto/res/onto.owl#Fridge
+
+:Fridge rdf:type owl:Class ;
+        
+        rdfs:subClassOf :Container .
+
+
+
+###  file:/C:/Users/ramol_na/Documents/workspace/LEAF/res/onto/res/onto.owl#Kitchen
+
+:Kitchen rdf:type owl:Class ;
+         
+         rdfs:subClassOf :Room .
+
+
+
+###  file:/C:/Users/ramol_na/Documents/workspace/LEAF/res/onto/res/onto.owl#Letter
+
+:Letter rdf:type owl:Class ;
+        
+        rdfs:subClassOf :Object .
+
+
+
+###  file:/C:/Users/ramol_na/Documents/workspace/LEAF/res/onto/res/onto.owl#Livingroom
+
+:Livingroom rdf:type owl:Class ;
+            
+            rdfs:subClassOf :Room .
+
+
+
+###  file:/C:/Users/ramol_na/Documents/workspace/LEAF/res/onto/res/onto.owl#Microwave
+
+:Microwave rdf:type owl:Class ;
+           
+           rdfs:subClassOf :Container .
+
+
+
+###  file:/C:/Users/ramol_na/Documents/workspace/LEAF/res/onto/res/onto.owl#MilkBox
+
+:MilkBox rdf:type owl:Class ;
+         
+         rdfs:subClassOf :Object .
+
+
+
+###  file:/C:/Users/ramol_na/Documents/workspace/LEAF/res/onto/res/onto.owl#Object
+
+:Object rdf:type owl:Class ;
+        
+        rdfs:subClassOf :Entity .
+
+
+
+###  file:/C:/Users/ramol_na/Documents/workspace/LEAF/res/onto/res/onto.owl#Office
+
+:Office rdf:type owl:Class ;
+        
+        rdfs:subClassOf :Room .
+
+
+
+###  file:/C:/Users/ramol_na/Documents/workspace/LEAF/res/onto/res/onto.owl#Person
+
+:Person rdf:type owl:Class ;
+        
+        rdfs:subClassOf :Entity .
+
+
+
+###  file:/C:/Users/ramol_na/Documents/workspace/LEAF/res/onto/res/onto.owl#RelativePos
+
+:RelativePos rdf:type owl:Class ;
+             
+             rdfs:subClassOf :ContextData .
+
+
+
+###  file:/C:/Users/ramol_na/Documents/workspace/LEAF/res/onto/res/onto.owl#Robot
+
+:Robot rdf:type owl:Class ;
+       
+       rdfs:subClassOf :Entity .
+
+
+
+###  file:/C:/Users/ramol_na/Documents/workspace/LEAF/res/onto/res/onto.owl#Room
+
+:Room rdf:type owl:Class ;
+      
+      rdfs:subClassOf :Entity .
+
+
+
+###  file:/C:/Users/ramol_na/Documents/workspace/LEAF/res/onto/res/onto.owl#Table
+
+:Table rdf:type owl:Class ;
+       
+       rdfs:subClassOf :Container .
+
+
+
+###  file:/C:/Users/ramol_na/Documents/workspace/LEAF/res/onto/res/onto.owl#Toy
+
+:Toy rdf:type owl:Class ;
+     
+     rdfs:subClassOf :Object .
+
+
+
+
+
+#################################################################
+#
+#    Individuals
+#
+#################################################################
+
+
+###  file:/C:/Users/ramol_na/Documents/workspace/LEAF/res/onto/res/onto.owl#bed1
+
+:bed1 rdf:type :Bedroom ,
+               owl:NamedIndividual ;
+      
+      :hasName "Bedroom" .
+
+
+
+###  file:/C:/Users/ramol_na/Documents/workspace/LEAF/res/onto/res/onto.owl#bot1
+
+:bot1 rdf:type :Bottle ,
+               owl:NamedIndividual ;
+      
+      :hasName "BottleWater1" .
+
+
+
+###  file:/C:/Users/ramol_na/Documents/workspace/LEAF/res/onto/res/onto.owl#bot2
+
+:bot2 rdf:type :Bottle ,
+               owl:NamedIndividual ;
+      
+      :hasName "BottleFanta" .
+
+
+
+###  file:/C:/Users/ramol_na/Documents/workspace/LEAF/res/onto/res/onto.owl#cooking
+
+:cooking rdf:type :Activity ,
+                  owl:NamedIndividual ;
+         
+         :hasName "Cooking" .
+
+
+
+###  file:/C:/Users/ramol_na/Documents/workspace/LEAF/res/onto/res/onto.owl#fridge1
+
+:fridge1 rdf:type :Fridge ,
+                  owl:NamedIndividual ;
+         
+         :hasName "Frigo" .
+
+
+
+###  file:/C:/Users/ramol_na/Documents/workspace/LEAF/res/onto/res/onto.owl#katleen
+
+:katleen rdf:type :Person ,
+                  owl:NamedIndividual ;
+         
+         :hasName "Katleen" .
+
+
+
+###  file:/C:/Users/ramol_na/Documents/workspace/LEAF/res/onto/res/onto.owl#kit1
+
+:kit1 rdf:type :Kitchen ,
+               owl:NamedIndividual ;
+      
+      :hasName "Kitchen" .
+
+
+
+###  file:/C:/Users/ramol_na/Documents/workspace/LEAF/res/onto/res/onto.owl#lr1
+
+:lr1 rdf:type :Livingroom ,
+              owl:NamedIndividual ;
+     
+     :hasName "Salon" .
+
+
+
+###  file:/C:/Users/ramol_na/Documents/workspace/LEAF/res/onto/res/onto.owl#nono
+
+:nono rdf:type :Robot ,
+               owl:NamedIndividual ;
+      
+      :hasName "Nono" .
+
+
+
+###  file:/C:/Users/ramol_na/Documents/workspace/LEAF/res/onto/res/onto.owl#off1
+
+:off1 rdf:type :Office ,
+               owl:NamedIndividual ;
+      
+      :hasName "Office" .
+
+
+
+###  file:/C:/Users/ramol_na/Documents/workspace/LEAF/res/onto/res/onto.owl#sleeping
+
+:sleeping rdf:type :Activity ,
+                   owl:NamedIndividual ;
+          
+          :hasName "Sleeping" .
+
+
+
+###  file:/C:/Users/ramol_na/Documents/workspace/LEAF/res/onto/res/onto.owl#table1
+
+:table1 rdf:type :Table ,
+                 owl:NamedIndividual ;
+        
+        :hasName "MainTable" .
+
+
+
+###  file:/C:/Users/ramol_na/Documents/workspace/LEAF/res/onto/res/onto.owl#working
+
+:working rdf:type :Activity ,
+                  owl:NamedIndividual ;
+         
+         :hasName "Working" .
+
+
+
+
+###  Generated by the OWL API (version 3.4.2) http://owlapi.sourceforge.net
+
