@@ -1,5 +1,15 @@
 package leaf.tools;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.text.DateFormat;
+import java.util.Date;
+import java.util.Locale;
+
+import org.apache.jena.ext.com.google.common.io.Files;
+
 /**
  * Displays log according to level of awareness
  * @author ramol_na
@@ -18,12 +28,27 @@ public class LeafLog {
 	 */
 	public static final int LOGLEVEL = 5;
 	
+	/**
+	 * Enable or not the file logging.
+	 * If active, a log file is written at root
+	 */
+	public static final boolean LOGFILEENABLE = true;
+	
+	/**
+	 * File log writer
+	 */
+	private static FileWriter fw ;
+	
 	
 	public static void e(String meta, String message)
 	{
 		if(LOGLEVEL >= 1)
 		{
-			System.out.println("ERROR | "+meta+" | "+message);
+			Date today = new Date();
+			String dateStr = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT, Locale.FRANCE).format(today);
+			String logStr = dateStr+" | ERROR | "+meta+" | "+message;
+			System.out.println(logStr);
+			writeToFile(logStr);
 		}
 	}
 	
@@ -31,7 +56,11 @@ public class LeafLog {
 	{
 		if(LOGLEVEL >= 2)
 		{
-			System.out.println("WARN  | "+meta+" | "+message);
+			Date today = new Date();
+			String dateStr = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT, Locale.FRANCE).format(today);
+			String logStr = dateStr+" | WARN  | "+meta+" | "+message;
+			System.out.println(logStr);
+			writeToFile(logStr);
 		}
 	}
 	
@@ -39,7 +68,11 @@ public class LeafLog {
 	{
 		if(LOGLEVEL >= 3)
 		{
-			System.out.println("INFO  | "+meta+" | "+message);
+			Date today = new Date();
+			String dateStr = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT, Locale.FRANCE).format(today);
+			String logStr = dateStr+" | INFO  | "+meta+" | "+message;
+			System.out.println(logStr);
+			writeToFile(logStr);
 		}
 	}
 	
@@ -47,7 +80,11 @@ public class LeafLog {
 	{
 		if(LOGLEVEL >= 4)
 		{
-			System.out.println("MILST | "+meta+" | "+message);
+			Date today = new Date();
+			String dateStr = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT, Locale.FRANCE).format(today);
+			String logStr = dateStr+" | MILST | "+meta+" | "+message;
+			System.out.println(logStr);
+			writeToFile(logStr);
 		}
 	}
 	
@@ -55,7 +92,34 @@ public class LeafLog {
 	{
 		if(LOGLEVEL >= 5)
 		{
-			System.out.println("DEBUG | "+meta+" | "+message);
+			Date today = new Date();
+			String dateStr = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT, Locale.FRANCE).format(today);
+			String logStr = dateStr+" | DEBUG | "+meta+" | "+message;
+			System.out.println(logStr);
+			writeToFile(logStr);
+		}
+	}
+	
+	private static void writeToFile(String message)
+	{
+		if(LOGFILEENABLE)
+		{
+			try {			
+				if(fw==null)
+				{
+					fw = new FileWriter(new File("leaf.log") );							
+				}
+				
+				BufferedWriter bw = new BufferedWriter(fw);
+				
+				bw.write(message+"\n");
+				
+				bw.flush();
+				
+			} catch (IOException e) {			
+				e.printStackTrace();
+				System.out.println("ERROR | LOG | "+" Unable to write logs into file !");
+			}
 		}
 	}
 }
