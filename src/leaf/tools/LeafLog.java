@@ -8,7 +8,6 @@ import java.text.DateFormat;
 import java.util.Date;
 import java.util.Locale;
 
-import org.apache.jena.ext.com.google.common.io.Files;
 
 /**
  * Displays log according to level of awareness
