@@ -61,17 +61,28 @@ public class LiveSituation extends Thread {
 	}
 	
 	/**
+	 * Add a direct triple (with node id)
+	 */
+	public void addRawData(String entity, String property, String value)
+	{
+		situation.updateProperty(entity, property, value);
+	}
+	
+	/**
 	 * Store the current situation in the history
 	 * @param task The current task during whom the situation was observed
 	 */
 	public void save(String task)
 	{		
 		//Save the file
-		DateFormat dateFormat = new SimpleDateFormat("yyyyMMdd_HHmmss");
+		DateFormat dateFormat = new SimpleDateFormat("yyyyMMdd_HHmmss_SSS");
 		Date date = new Date();
 		
 		String ontoName = "situation_"+dateFormat.format(date)+".ttl";
 		String path = "res/history/" + ontoName;
+		
+		//Apply rules before saving
+		situation.applyRules();
 		
 		situation.export(path);
 		
@@ -97,6 +108,9 @@ public class LiveSituation extends Thread {
 	public synchronized Double getTaskCurrentRisk(String task)
 	{
 		LeafLog.m("Risk eval.", "Starting failing risk assesment for task "+task);
+		
+		//Apply rules
+		situation.applyRules();
 		
 		//Get all current context data:
 		ArrayList<ContextData> currentCd = situation.getContextData();

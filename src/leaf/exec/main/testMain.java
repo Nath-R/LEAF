@@ -1,4 +1,4 @@
-package leaf.main;
+package leaf.exec.main;
 
 
 import java.util.HashMap;
@@ -22,9 +22,9 @@ public class testMain {
 		
 		testExtraction();
 		
-		testFeedback();
+		//testFeedback();
 		
-		testRiskEval();
+		//testRiskEval();
 	
 	}
 	
@@ -35,6 +35,15 @@ public class testMain {
 		ls.addData("Katleen", "isDoing", "Cooking");
 		ls.addData("Katleen", "isLocatedIn", "Salon");
 		//ls.addData("BottleWater1", "inFrontOf", "BottleFanta");		
+		//ls.addRawData("bot1", "hasPosition", "posbot1");
+		ls.addData("BottleWater1", "isLocatedIn", "Salon");
+		ls.addData("BottleFanta", "isLocatedIn", "Salon");
+		ls.addRawData("bot1pos", "x", "25" );
+		ls.addRawData("bot1pos", "y", "200" );
+		//ls.addRawData("bot2", "hasPosition", "posbot2");
+		ls.addRawData("bot2pos", "x", Integer.toString((int)(Math.random()*50)) );
+		ls.addRawData("bot2pos", "y", Integer.toString((int)(Math.random()*150)) );
+		
 		ls.save("doStuff");		
 		ls.lastTaskFailed();
 		
@@ -42,7 +51,16 @@ public class testMain {
 		
 		ls.addData("Katleen", "isDoing", "Cooking");
 		ls.addData("Katleen", "isLocatedIn", "Salon");
-		ls.addData("BottleWater1", "inFrontOf", "BottleFanta");		
+		//ls.addData("BottleWater1", "inFrontOf", "BottleFanta");	
+		//ls.addRawData("bot1", "hasPosition", "posbot1");
+		ls.addData("BottleWater1", "isLocatedIn", "Salon");
+		ls.addData("BottleFanta", "isLocatedIn", "Salon");
+		ls.addRawData("bot1pos", "x", "25" );
+		ls.addRawData("bot1pos", "y", "200" );
+		//ls.addRawData("bot2", "hasPosition", "posbot2");
+		ls.addRawData("bot2pos", "x", Integer.toString((int)(Math.random()*50)) );
+		ls.addRawData("bot2pos", "y", Integer.toString((int)(Math.random()*150)) );
+		
 		ls.save("doStuff");		
 		ls.lastTaskFailed();
 		
@@ -50,7 +68,16 @@ public class testMain {
 		
 		ls.addData("Katleen", "isDoing", "Cooking");
 		ls.addData("Katleen", "isLocatedIn", "Salon");
-		//ls.addData("BottleWater1", "inFrontOf", "BottleFanta");		
+		//ls.addData("BottleWater1", "inFrontOf", "BottleFanta");
+		//ls.addRawData("bot1", "hasPosition", "posbot1");
+		ls.addData("BottleWater1", "isLocatedIn", "Salon");
+		ls.addData("BottleFanta", "isLocatedIn", "Salon");
+		ls.addRawData("bot1pos", "x", "25" );
+		ls.addRawData("bot1pos", "y", "200" );
+		//ls.addRawData("bot2", "hasPosition", "posbot2");
+		ls.addRawData("bot2pos", "x", "25" );
+		ls.addRawData("bot2pos", "y", "0");
+		
 		ls.save("doStuff");		
 		ls.lastTaskFailed();
 		

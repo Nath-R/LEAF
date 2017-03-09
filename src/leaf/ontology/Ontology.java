@@ -48,7 +48,7 @@ public class Ontology {
 	/**
 	 * Path to rule file
 	 */
-	public static final String RULES = "res/rules/rule.txt";
+	public static final String RULES = "res/onto/rules.txt";
 	
 	/**
 	 * Prefix for query
@@ -85,6 +85,7 @@ public class Ontology {
 	public Ontology()
 	{
 		ontoFile = null;
+		infModel = null;
 				
 		try {
 			model = ModelFactory.createOntologyModel( OntModelSpec.OWL_MEM );
@@ -101,6 +102,9 @@ public class Ontology {
 	 */
 	public Ontology(String path)
 	{
+		ontoFile = null;
+		infModel = null;
+		
 		try {
 			model = ModelFactory.createOntologyModel( OntModelSpec.OWL_MEM );
 			model.read(new FileInputStream(path),null,"TTL");
@@ -160,6 +164,8 @@ public class Ontology {
      */
     public void applyRules()
     {
+    	LeafLog.m("Ontology", "Applying rules...");
+    	
     	Reasoner reasoner = new GenericRuleReasoner( Rule.rulesFromURL( RULES ) );
     	
     	infModel = ModelFactory.createInfModel( reasoner, model );
@@ -174,13 +180,14 @@ public class Ontology {
     	
     	String query = PREFIX + "insert data {"+subject+" "+predicate+" "+object+"}";
     	
-    	LeafLog.d("Ontology", query); 
+    	LeafLog.d("Ontology", "insert data {"+subject+" "+predicate+" "+object+"}"); 
     	
     	UpdateAction.parseExecute(query, model);
     }
     
     /**
-     * Add a triple concerning an entity having the name given in parameter with a property (preucate) and a value
+     * Add a triple concerning an entity having the name given in parameter with a property (predicate) and another object
+     * 
      */
     public void updateEntity(String name, String property, String object)
     {
@@ -189,10 +196,27 @@ public class Ontology {
        	String query = PREFIX + "insert {?subj leaf:"+property+" ?obj } ";
     	query += "where{ ?subj leaf:hasName '"+name+"' . ?obj leaf:hasName '"+object+"'}";
     	
-    	LeafLog.d("Ontology", query); 
+    	LeafLog.d("Ontology", "insert {?subj leaf:"+property+" ?obj } where..."); 
     	
     	UpdateAction.parseExecute(query, model);
     	
+    }
+    
+    /**
+     *  Add  a data property (i.e. literal for a given entity)
+     *  The subject is the id of an individual
+     *  For example: user name or position of entity
+     *  Caution: value is not quoted
+     */
+    public void updateProperty(String subject, String property, String value)
+    {
+    	LeafLog.i("Ontology", "Updating context ontology..."); 
+    	
+    	String query = PREFIX + "insert data {leaf:"+subject+" leaf:"+property+" "+value+"}";
+    	
+    	LeafLog.d("Ontology", "insert data {leaf:"+subject+" leaf:"+property+" "+value+"}"); 
+    	
+    	UpdateAction.parseExecute(query, model);
     }
     
     /**
@@ -206,12 +230,17 @@ public class Ontology {
     	ArrayList<ContextData> ret = new ArrayList<ContextData>();
     	
        	String queryStr = PREFIX + "select distinct ?subj ?pred ?obj ";
-    	queryStr += "where{ ?subj leaf:hasName ?a .  ?subj ?pred ?obj ."
+    	queryStr += "where{ ?subj leaf:hasName ?a .  ?subj ?pred ?obj . ?obj leaf:hasName ?b"
     			+ " filter not exists { ?subj rdf:type ?obj } ."
     			+ " filter not exists { ?subj leaf:hasName ?obj }  }"; //Remove this filter if name is to be taken into account
     	
     	 Query query = QueryFactory.create( queryStr );
-         QueryExecution qexec = QueryExecutionFactory.create( query, model );
+         QueryExecution qexec;
+         if(infModel == null) //If non inferred data, use standard model
+		 { qexec = QueryExecutionFactory.create( query, model ); }
+         else
+         { qexec = QueryExecutionFactory.create( query, infModel );}
+         
          try {
              ResultSet results = qexec.execSelect();              
              while (results.hasNext()) {

@@ -30,8 +30,9 @@ public class DataBaseManager {
 	
 	/**
 	 * Path to db file
+	 * TODO solve path
 	 */
-	private static final String DBPATH = "~/Documents/workspace/LEAF/res/db/db";
+	private static final String DBPATH = "~/git/LEAF/res/db/db";
 	
 	
 	

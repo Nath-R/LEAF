@@ -1,0 +1,44 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+@prefix owl: <http://www.w3.org/2002/07/owl#>
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> 
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+@prefix LEAF: <file:///C:/Users/ramol_na/Documents/workspace/LEAF/res/onto/res/onto.owl#>
+
+[inFrontOf:
+	(?obj1 LEAF:isLocatedIn ?room),
+	(?obj2 LEAF:isLocatedIn ?room),
+	(?obj1 LEAF:hasPosition ?posO1),
+	(?obj2 LEAF:hasPosition ?posO2),
+	(?posO1 LEAF:x ?x1),
+	(?posO1 LEAF:y ?y1),
+	(?posO2 LEAF:x ?x2),
+	(?posO2 LEAF:y ?y2),
+	difference(?x1, ?x2, ?diffx),
+	greaterThan(?diffx, -50),
+	lessThan(?diffx, 50),
+	difference(?y1, ?y2, ?diffy),
+	greaterThan(?diffy, 50),
+	notEqual(?obj1, ?obj2)
+	->
+	(?obj2 LEAF:inFrontOf ?obj1)
+]
+
+[isCloseTo:
+	(?obj1 LEAF:isLocatedIn ?room),
+	(?obj2 LEAF:isLocatedIn ?room),
+	(?obj1 LEAF:hasPosition ?posO1),
+	(?obj2 LEAF:hasPosition ?posO2),
+	(?posO1 LEAF:x ?x1),
+	(?posO1 LEAF:y ?y1),
+	(?posO2 LEAF:x ?x2),
+	(?posO2 LEAF:y ?y2),
+	difference(?x1, ?x2, ?diffx),
+	ge(?diffx, -50),
+	le(?diffx, 50),
+	difference(?y1, ?y2, ?diffy),
+	ge(?diffy, -50),
+	le(?diffy, 50),
+	notEqual(?obj1, ?obj2)
+	->
+	(?obj2 LEAF:isCloseTo ?obj1)
+]
