@@ -33,7 +33,7 @@ public class Extraction {
 	/**
 	 * Minimum number of failing situation required for the extraction to be possible.
 	 */
-	private static final int MINFAILSIT = 2;
+	private static final int MINFAILSIT = 3;
 	
 	/**
 	 * Number of question ask to user
@@ -53,7 +53,7 @@ public class Extraction {
 	 * Extraction and computation of data to ask to user
 	 * @param task The task whose failure is being investigated
 	 */
-	public static void extractDataToAsk(String task)
+	public static ArrayList<ContextData> extractDataToAsk(String task)
 	{
 		LeafLog.m("Extraction", "Starting causes question selection");
 		
@@ -66,7 +66,7 @@ public class Extraction {
 		{
 			//Aborting
 			LeafLog.w("Extraction", "Not enough failing situations yet !");
-			return;
+			return null;
 		}
 		//Getting the path to last failing ontology
 		String path = dbm.getLastFailSitOntoPath(task);
@@ -133,6 +133,7 @@ public class Extraction {
 		
 		//Step 5 - Return the data to ask the user
 		//TODO
+		return dataToAsk;
 		
 		
 		//AFTERMARTH Step 6 - wait for feedback and update belief accordingly.
@@ -183,7 +184,7 @@ public class Extraction {
 		//High amount of disk access !
 		for(String path: paths)
 		{
-			LeafLog.d("Extraction", "Loading ontology: "+path);
+			//LeafLog.d("Extraction", "Loading ontology: "+path);
 			
 			//Loading ontology
 			Ontology onto = new Ontology(path);

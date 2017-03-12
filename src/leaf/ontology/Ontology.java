@@ -225,7 +225,7 @@ public class Ontology {
      */
     public ArrayList<ContextData> getContextData()
     {
-    	LeafLog.m(this.getClass().toString(), "Extracting all context data of the ontology");
+    	//LeafLog.m("Ontology", "Extracting all context data of the ontology");
     	
     	ArrayList<ContextData> ret = new ArrayList<ContextData>();
     	

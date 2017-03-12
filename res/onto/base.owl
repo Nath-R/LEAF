@@ -327,7 +327,9 @@
 :bed rdf:type :Bed ,
               owl:NamedIndividual ;
      
-     :hasName "bed" .
+     :hasName "bed" ;
+     
+     :hasPosition :bedPos .
 
 
 
@@ -337,6 +339,13 @@
                owl:NamedIndividual ;
       
       :hasName "Bedroom" .
+
+
+
+###  file:/C:/Users/ramol_na/Documents/workspace/LEAF/res/onto/res/onto.owl#bedPos
+
+:bedPos rdf:type :RelativePos ,
+                 owl:NamedIndividual .
 
 
 
@@ -351,6 +360,13 @@
 
 
 
+###  file:/C:/Users/ramol_na/Documents/workspace/LEAF/res/onto/res/onto.owl#bot1pos
+
+:bot1pos rdf:type :RelativePos ,
+                  owl:NamedIndividual .
+
+
+
 ###  file:/C:/Users/ramol_na/Documents/workspace/LEAF/res/onto/res/onto.owl#bot2
 
 :bot2 rdf:type :Bottle ,
@@ -359,6 +375,13 @@
       :hasName "BottleFanta" ;
       
       :hasPosition :bot2pos .
+
+
+
+###  file:/C:/Users/ramol_na/Documents/workspace/LEAF/res/onto/res/onto.owl#bot2pos
+
+:bot2pos rdf:type :RelativePos ,
+                  owl:NamedIndividual .
 
 
 
@@ -436,6 +459,13 @@
 
 
 
+###  file:/C:/Users/ramol_na/Documents/workspace/LEAF/res/onto/res/onto.owl#posChair1
+
+:posChair1 rdf:type :RelativePos ,
+                    owl:NamedIndividual .
+
+
+
 ###  file:/C:/Users/ramol_na/Documents/workspace/LEAF/res/onto/res/onto.owl#sleeping
 
 :sleeping rdf:type :Activity ,
@@ -460,27 +490,6 @@
                   owl:NamedIndividual ;
          
          :hasName "Working" .
-
-
-
-###  http://res/onto/onto.owl#bot1pos
-
-:bot1pos rdf:type :RelativePos ,
-                  owl:NamedIndividual .
-
-
-
-###  http://res/onto/onto.owl#bot2pos
-
-:bot2pos rdf:type :RelativePos ,
-                  owl:NamedIndividual .
-
-
-
-###  http://res/onto/onto.owl#posChair1
-
-:posChair1 rdf:type :RelativePos ,
-                    owl:NamedIndividual .
 
 
 
