@@ -20,11 +20,11 @@ public class testMain {
 		
 		createSituations();
 		
-		testExtraction();
+		//testExtraction();
 		
 		//testFeedback();
 		
-		//testRiskEval();
+		testRiskEval();
 	
 	}
 	
@@ -66,7 +66,7 @@ public class testMain {
 		
 		ls.reset();
 		
-		ls.addData("Katleen", "isDoing", "Cooking");
+		ls.addData("Katleen", "isDoing", "Eating");
 		ls.addData("Katleen", "isLocatedIn", "Salon");
 		//ls.addData("BottleWater1", "inFrontOf", "BottleFanta");
 		//ls.addRawData("bot1", "hasPosition", "posbot1");
@@ -106,7 +106,8 @@ public class testMain {
 		ls.addData("Katleen", "isLocatedIn", "Salon");
 		ls.addData("BottleWater1", "inFrontOf", "BottleFanta");
 		
-		ls.getTaskCurrentRisk("doStuff");
+		//ls.getTaskCurrentRisk("doStuff");
+		System.out.println( ls.getCurrentTaskRiskStat("doStuff"));
 	}
 	
 }

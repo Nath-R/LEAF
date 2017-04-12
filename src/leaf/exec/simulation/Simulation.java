@@ -47,7 +47,7 @@ public class Simulation {
 			
 			//Select task with system
 			Double confFailTaskGive = ls.getTaskCurrentRisk("DeliverObject");
-			
+			//Double confFailTaskGive = ls.getCurrentTaskRiskStat("DeliverObject");
 			
 			confs.add(confFailTaskGive);
 			
@@ -77,7 +77,7 @@ public class Simulation {
 			//The second task succeed
 			else if(taskGiveOk && confFailTaskGive >= THRESHRISK)
 			{
-				ls.save("putObject");
+				ls.save("DeliverObject"); //Save deliver object as it was suppose to be runnable
 				results.add("FP");
 			}
 			//No problem and no correction (True negative)
@@ -118,7 +118,7 @@ public class Simulation {
 		
 		//Write result to file:
 		try {
-			FileWriter fw = new FileWriter(new File("result.csv") );	
+			FileWriter fw = new FileWriter(new File("result.csv"), true );	
 			BufferedWriter bw = new BufferedWriter(fw);
 			String message = "";
 			
