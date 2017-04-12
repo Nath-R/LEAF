@@ -33,7 +33,7 @@ public class Extraction {
 	/**
 	 * Minimum number of failing situation required for the extraction to be possible.
 	 */
-	private static final int MINFAILSIT = 2;
+	private static final int MINFAILSIT = 3;
 	
 	/**
 	 * Number of question ask to user
@@ -53,7 +53,7 @@ public class Extraction {
 	 * Extraction and computation of data to ask to user
 	 * @param task The task whose failure is being investigated
 	 */
-	public static void extractDataToAsk(String task)
+	public static ArrayList<ContextData> extractDataToAsk(String task)
 	{
 		LeafLog.m("Extraction", "Starting causes question selection");
 		
@@ -66,7 +66,7 @@ public class Extraction {
 		{
 			//Aborting
 			LeafLog.w("Extraction", "Not enough failing situations yet !");
-			return;
+			return null;
 		}
 		//Getting the path to last failing ontology
 		String path = dbm.getLastFailSitOntoPath(task);
@@ -112,7 +112,7 @@ public class Extraction {
 		LeafLog.d("Extraction", "CD in fail history:");
 		LeafLog.d("Extraction", failCdHistory.toString());
 		
-		HashMap<ContextData, Integer> scores =  computeScore(cdNoBelief, successCdHistory, failCdHistory);
+		HashMap<ContextData, Double> scores =  computeScore(cdNoBelief, successCdHistory, failCdHistory);
 		
 		LeafLog.d("Extraction", "Scores:");
 		LeafLog.d("Extraction", scores.toString());
@@ -126,6 +126,7 @@ public class Extraction {
 		LeafLog.d("Extraction", "nbrSitFail: "+nbrSFail+"   risk: "+risk);
 		
 		ArrayList<ContextData> dataToAsk = RUCB.selection(risk, cdBelief, cdNoBelief, scores, NUMQUESTUSER, nbrSFail);
+//		ArrayList<ContextData> dataToAsk = RandomArmedBandit.selection(risk, cdBelief, cdNoBelief, scores, NUMQUESTUSER, nbrSFail);
 		
 		LeafLog.i("Extraction", "Selected context data to check:");
 		LeafLog.i("Extraction", dataToAsk.toString());
@@ -133,6 +134,7 @@ public class Extraction {
 		
 		//Step 5 - Return the data to ask the user
 		//TODO
+		return dataToAsk;
 		
 		
 		//AFTERMARTH Step 6 - wait for feedback and update belief accordingly.
@@ -183,7 +185,7 @@ public class Extraction {
 		//High amount of disk access !
 		for(String path: paths)
 		{
-			LeafLog.d("Extraction", "Loading ontology: "+path);
+			//LeafLog.d("Extraction", "Loading ontology: "+path);
 			
 			//Loading ontology
 			Ontology onto = new Ontology(path);
@@ -200,27 +202,29 @@ public class Extraction {
 	 * @param fhcd fail history cd
 	 * @param shcd success history cd
 	 */
-	private static HashMap<ContextData, Integer> computeScore(ArrayList<ContextData> ucd, ArrayList<ContextData> shcd, ArrayList<ContextData> fhcd)
+	private static HashMap<ContextData, Double> computeScore(ArrayList<ContextData> ucd, ArrayList<ContextData> shcd, ArrayList<ContextData> fhcd)
 	{
-		HashMap<ContextData, Integer> scores = new HashMap<ContextData, Integer>();
+		HashMap<ContextData, Double> scores = new HashMap<ContextData, Double>();
 		
 		//For each currently observed unknown context data...
 		for(ContextData cd: ucd)
 		{
-			Integer score = 0;
+			Double score = 0.0;
 			//count occurence in failure and success history
+			Double tot = 0.0;
+			
 			for(ContextData fcd: fhcd)
 			{
 				if(cd.equals(fcd))
-				{score++;}
+				{score++; tot++; }
 			}
 			for(ContextData scd: shcd)
 			{
 				if(cd.equals(scd))
-				{score--;}
+				{score--; tot++; }
 			}
 			
-			scores.put(cd, score);
+			scores.put(cd, score/tot);
 		}
 		
 		return scores;

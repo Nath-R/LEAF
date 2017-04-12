@@ -44,7 +44,7 @@ public class RUCB {
 	 * @param T Number of total fail situation for this task (use for selecting best context data)
 	 * @return
 	 */
-	public static ArrayList<ContextData> selection( Double risk, ArrayList<ContextData> oldCauses, ArrayList<ContextData> newCauses, HashMap<ContextData, Integer> scoreNewCauses, Integer N, Integer T)
+	public static ArrayList<ContextData> selection( Double risk, ArrayList<ContextData> oldCauses, ArrayList<ContextData> newCauses, HashMap<ContextData, Double> scoreNewCauses, Integer N, Integer T)
 	{
 		ArrayList<ContextData> ret = new ArrayList<ContextData>();
 		
@@ -63,7 +63,7 @@ public class RUCB {
 		return ret;
 	}
 	
-	private static ArrayList<ContextData> EUCB( Double E, ArrayList<ContextData> oldCauses, ArrayList<ContextData> newCauses, HashMap<ContextData, Integer> scoreNewCauses, Integer N, Integer T)
+	private static ArrayList<ContextData> EUCB( Double E, ArrayList<ContextData> oldCauses, ArrayList<ContextData> newCauses, HashMap<ContextData, Double> scoreNewCauses, Integer N, Integer T)
 	{
 		ArrayList<ContextData> ret = new ArrayList<ContextData>();
 		
@@ -102,25 +102,50 @@ public class RUCB {
 			if(q<=E || noExploitAvailable) //Explore
 			{
 				LeafLog.m("RUCB","Explore for iteration "+i);
+				
+				
 				//Select the newly observed data with the highest score
-				ContextData curSelcd = null;
-				Integer maxScore = 0;
+//				ContextData curSelcd = null;
+//				Integer maxScore = 0;
+//				
+//				for(ContextData nc: newCauses)
+//				{
+//					//If higher score and not already selected...
+//					if(scoreNewCauses.get(nc) > maxScore && !ret.contains(nc))
+//					{
+//						curSelcd = nc;
+//						maxScore = scoreNewCauses.get(nc);
+//					}
+//				}	
+//				
+//				//Adding to return list
+//				if(curSelcd != null)
+//				{ ret.add(curSelcd); }
+//				else
+//				{ LeafLog.i("RUCB","No further context data to be checked in exploration");	}
+				
+				//Select a random value
+				//Create list with score > 0 and not in list
+				ArrayList<ContextData> filteredCauses = new ArrayList<ContextData>();
 				
 				for(ContextData nc: newCauses)
 				{
-					//If higher score and not already selected...
-					if(scoreNewCauses.get(nc) > maxScore && !ret.contains(nc))
+					if(scoreNewCauses.get(nc) > 0.5  && !ret.contains(nc))
 					{
-						curSelcd = nc;
-						maxScore = scoreNewCauses.get(nc);
+						filteredCauses.add(nc);
 					}
-				}				
+				}
 				
-				//Adding to return list
-				if(curSelcd != null)
-				{ ret.add(curSelcd); }
+				if(filteredCauses.size() <= 0)
+				{LeafLog.i("RUCB","No further context data to be checked in exploration");	}
 				else
-				{ LeafLog.i("RUCB","No further context data to be checked in exploration");	}
+				{
+					int randVal = (int)( (Math.random())*filteredCauses.size());
+					if(randVal == filteredCauses.size())
+					{randVal--;}
+					ret.add(filteredCauses.get(randVal));
+				}
+
 			}
 		}
 		
