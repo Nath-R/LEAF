@@ -112,7 +112,7 @@ public class Extraction {
 		LeafLog.d("Extraction", "CD in fail history:");
 		LeafLog.d("Extraction", failCdHistory.toString());
 		
-		HashMap<ContextData, Integer> scores =  computeScore(cdNoBelief, successCdHistory, failCdHistory);
+		HashMap<ContextData, Double> scores =  computeScore(cdNoBelief, successCdHistory, failCdHistory);
 		
 		LeafLog.d("Extraction", "Scores:");
 		LeafLog.d("Extraction", scores.toString());
@@ -126,6 +126,7 @@ public class Extraction {
 		LeafLog.d("Extraction", "nbrSitFail: "+nbrSFail+"   risk: "+risk);
 		
 		ArrayList<ContextData> dataToAsk = RUCB.selection(risk, cdBelief, cdNoBelief, scores, NUMQUESTUSER, nbrSFail);
+//		ArrayList<ContextData> dataToAsk = RandomArmedBandit.selection(risk, cdBelief, cdNoBelief, scores, NUMQUESTUSER, nbrSFail);
 		
 		LeafLog.i("Extraction", "Selected context data to check:");
 		LeafLog.i("Extraction", dataToAsk.toString());
@@ -201,27 +202,29 @@ public class Extraction {
 	 * @param fhcd fail history cd
 	 * @param shcd success history cd
 	 */
-	private static HashMap<ContextData, Integer> computeScore(ArrayList<ContextData> ucd, ArrayList<ContextData> shcd, ArrayList<ContextData> fhcd)
+	private static HashMap<ContextData, Double> computeScore(ArrayList<ContextData> ucd, ArrayList<ContextData> shcd, ArrayList<ContextData> fhcd)
 	{
-		HashMap<ContextData, Integer> scores = new HashMap<ContextData, Integer>();
+		HashMap<ContextData, Double> scores = new HashMap<ContextData, Double>();
 		
 		//For each currently observed unknown context data...
 		for(ContextData cd: ucd)
 		{
-			Integer score = 0;
+			Double score = 0.0;
 			//count occurence in failure and success history
+			Double tot = 0.0;
+			
 			for(ContextData fcd: fhcd)
 			{
 				if(cd.equals(fcd))
-				{score++;}
+				{score++; tot++; }
 			}
 			for(ContextData scd: shcd)
 			{
 				if(cd.equals(scd))
-				{score--;}
+				{score--; tot++; }
 			}
 			
-			scores.put(cd, score);
+			scores.put(cd, score/tot);
 		}
 		
 		return scores;

@@ -44,7 +44,7 @@ public class RUCB {
 	 * @param T Number of total fail situation for this task (use for selecting best context data)
 	 * @return
 	 */
-	public static ArrayList<ContextData> selection( Double risk, ArrayList<ContextData> oldCauses, ArrayList<ContextData> newCauses, HashMap<ContextData, Integer> scoreNewCauses, Integer N, Integer T)
+	public static ArrayList<ContextData> selection( Double risk, ArrayList<ContextData> oldCauses, ArrayList<ContextData> newCauses, HashMap<ContextData, Double> scoreNewCauses, Integer N, Integer T)
 	{
 		ArrayList<ContextData> ret = new ArrayList<ContextData>();
 		
@@ -63,7 +63,7 @@ public class RUCB {
 		return ret;
 	}
 	
-	private static ArrayList<ContextData> EUCB( Double E, ArrayList<ContextData> oldCauses, ArrayList<ContextData> newCauses, HashMap<ContextData, Integer> scoreNewCauses, Integer N, Integer T)
+	private static ArrayList<ContextData> EUCB( Double E, ArrayList<ContextData> oldCauses, ArrayList<ContextData> newCauses, HashMap<ContextData, Double> scoreNewCauses, Integer N, Integer T)
 	{
 		ArrayList<ContextData> ret = new ArrayList<ContextData>();
 		
@@ -130,7 +130,7 @@ public class RUCB {
 				
 				for(ContextData nc: newCauses)
 				{
-					if(scoreNewCauses.get(nc) > 0.0  && !ret.contains(nc))
+					if(scoreNewCauses.get(nc) > 0.5  && !ret.contains(nc))
 					{
 						filteredCauses.add(nc);
 					}

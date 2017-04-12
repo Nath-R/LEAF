@@ -4,6 +4,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 
 import leaf.ontology.Ontology;
 import leaf.tools.DataBaseManager;
@@ -138,7 +139,8 @@ public class LiveSituation extends Thread {
 		
 		Double factor = 1.0;
 		LeafLog.d("Risk eval.", "risk computation info:  sumB="+sumB+" nbCause="+obsCauses.size());
-		Double risk = Math.atan( factor*sumB )/(Math.PI/2.0); //Atan between 0.1
+		//Double risk = Math.atan( factor*sumB )/(Math.PI/2.0); //Atan between 0.1
+		Double risk = 1/(1 + Math.exp(-1*Math.log(factor*sumB)) );
 		
 		LeafLog.i("Risk eval.", "Task "+task+" has a risk of failure of: "+risk);
 		
@@ -151,5 +153,96 @@ public class LiveSituation extends Thread {
 	public void reset()
 	{
 		situation = new Ontology();
+	}
+	
+	
+	/**
+	 * Assert if the current situation is runnable by statistical analysis
+	 */
+	public Double getCurrentTaskRiskStat(String task)
+	{
+		//Get all current context data:
+		ArrayList<ContextData> currentCd = situation.getContextData();
+		ArrayList<ContextData> successCdHistory = getObservedCDHistory(task, dbm, true);
+		ArrayList<ContextData> failCdHistory = getObservedCDHistory(task, dbm, false);
+		int nbFailSit = dbm.getNbrFailSituation(task);
+		
+		HashMap<ContextData, Double> scores =  computeScore(currentCd, successCdHistory, failCdHistory, nbFailSit);
+		
+		//Find the max
+		Double max = 0.0;
+		for(ContextData cd: currentCd)
+		{
+			LeafLog.d("Stat", "Score for: "+cd+" "+scores.get(cd));
+			if(scores.get(cd) > max)
+			{
+				max = scores.get(cd);
+			}
+		}
+		
+		return max;
+	}
+	
+	/**
+	 * Copy from extraction for the statistical anaylis
+	 * Adjusted to be 0,1
+	 */
+	private  HashMap<ContextData, Double> computeScore(ArrayList<ContextData> ucd, ArrayList<ContextData> shcd, ArrayList<ContextData> fhcd, int nbFailSit)
+	{
+		HashMap<ContextData, Double> scores = new HashMap<ContextData, Double>();
+		
+		//For each currently observed unknown context data...
+		for(ContextData cd: ucd)
+		{
+			int score = 0;
+			int nbr = 0;
+			//count occurence in failure and success history
+			for(ContextData fcd: fhcd)
+			{
+				if(cd.equals(fcd))
+				{score++; nbr++;}
+			}
+			for(ContextData scd: shcd)
+			{				
+				if(cd.equals(scd))
+				{score-=1; nbr++; }
+			}
+			
+			Double res = (double)score/(double)nbr;
+			if(res < 0)
+			{ res=0.0; }
+			
+			scores.put(cd, res);
+		}
+		
+		return scores;
+	}
+	
+	/**
+	 * Copy from extraction for statisitcal analysis
+	 */
+	private static ArrayList<ContextData> getObservedCDHistory(String task, DataBaseManager dbm, boolean success)
+	{
+		ArrayList<ContextData> cdHistorySuccess = new ArrayList<ContextData>();
+		
+		ArrayList<String> paths = dbm.getOntoPaths(task, success);
+		
+		LeafLog.i("Extraction", "Reading all context in history for task "+task+". High number of disk IO !");
+		
+		//Go through all onto and get observed task
+		//A same context data can be observed and stored multiple times in the list
+		//The occurrence of a given cd will then be counted
+		//High amount of disk access !
+		for(String path: paths)
+		{
+			//LeafLog.d("Extraction", "Loading ontology: "+path);
+			
+			//Loading ontology
+			Ontology onto = new Ontology(path);
+			
+			cdHistorySuccess.addAll( onto.getContextData() );
+		}
+		
+		return cdHistorySuccess;
 	}
 }
