@@ -338,7 +338,7 @@
 :bed1 rdf:type :Bedroom ,
                owl:NamedIndividual ;
       
-      :hasName "Bedroom" .
+      :hasName "bedroom" .
 
 
 
@@ -428,7 +428,7 @@
 :kit1 rdf:type :Kitchen ,
                owl:NamedIndividual ;
       
-      :hasName "Kitchen" .
+      :hasName "kitchen" .
 
 
 
@@ -437,7 +437,16 @@
 :lr1 rdf:type :Livingroom ,
               owl:NamedIndividual ;
      
-     :hasName "Salon" .
+     :hasName "livingroom" .
+
+
+
+###  file:/C:/Users/ramol_na/Documents/workspace/LEAF/res/onto/res/onto.owl#music
+
+:music rdf:type :Activity ,
+                owl:NamedIndividual ;
+       
+       :hasName "Music" .
 
 
 
@@ -455,7 +464,7 @@
 :off1 rdf:type :Office ,
                owl:NamedIndividual ;
       
-      :hasName "Office" .
+      :hasName "office" .
 
 
 
@@ -481,6 +490,15 @@
                  owl:NamedIndividual ;
         
         :hasName "table1" .
+
+
+
+###  file:/C:/Users/ramol_na/Documents/workspace/LEAF/res/onto/res/onto.owl#user
+
+:user rdf:type :Person ,
+               owl:NamedIndividual ;
+      
+      :hasName "user" .
 
 
 

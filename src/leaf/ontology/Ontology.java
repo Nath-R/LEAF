@@ -196,7 +196,7 @@ public class Ontology {
        	String query = PREFIX + "insert {?subj leaf:"+property+" ?obj } ";
     	query += "where{ ?subj leaf:hasName '"+name+"' . ?obj leaf:hasName '"+object+"'}";
     	
-    	LeafLog.d("Ontology", "insert {?subj leaf:"+property+" ?obj } where..."); 
+    	LeafLog.d("Ontology", query); 
     	
     	UpdateAction.parseExecute(query, model);
     	
