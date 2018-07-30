@@ -37,6 +37,7 @@ public class RUCB {
 	/**
 	 * 
 	 * @param risk
+	 * @param task Current checked task, used for building the causal graph
 	 * @param oldCauses
 	 * @param newCauses
 	 * @param scoreNewCauses
@@ -44,7 +45,7 @@ public class RUCB {
 	 * @param T Number of total fail situation for this task (use for selecting best context data)
 	 * @return
 	 */
-	public static ArrayList<ContextData> selection( Double risk, ArrayList<ContextData> oldCauses, ArrayList<ContextData> newCauses, HashMap<ContextData, Double> scoreNewCauses, Integer N, Integer T)
+	public static ArrayList<ContextData> selection( Double risk, String task, ArrayList<ContextData> oldCauses, ArrayList<ContextData> newCauses, HashMap<ContextData, Double> scoreNewCauses, Integer N, Integer T)
 	{
 		ArrayList<ContextData> ret = new ArrayList<ContextData>();
 		
@@ -53,19 +54,24 @@ public class RUCB {
 		
 		if(risk < THR)
 		{
-			ret = EUCB(E, oldCauses, newCauses, scoreNewCauses, N, T); 
+			ret = EUCB(E, task, oldCauses, newCauses, scoreNewCauses, N, T); 
 		}
 		else if (risk >= THR)
 		{
-			ret = EUCB(EMIN, oldCauses, newCauses, scoreNewCauses, N, T);
+			ret = EUCB(EMIN, task, oldCauses, newCauses, scoreNewCauses, N, T);
 		}			
 		
 		return ret;
 	}
 	
-	private static ArrayList<ContextData> EUCB( Double E, ArrayList<ContextData> oldCauses, ArrayList<ContextData> newCauses, HashMap<ContextData, Double> scoreNewCauses, Integer N, Integer T)
+	private static ArrayList<ContextData> EUCB( Double E, String task, ArrayList<ContextData> oldCauses, ArrayList<ContextData> newCauses, HashMap<ContextData, Double> scoreNewCauses, Integer N, Integer T)
 	{
 		ArrayList<ContextData> ret = new ArrayList<ContextData>();
+		
+		//Method 4b: Causal graph generation:
+		CausalGraph cg = new CausalGraph(task);
+		cg.construct();
+		ArrayList<ContextData> cdListCg = cg.listCauses(new ContextData(task, "outcome", "failure"));
 		
 		//Selecting  N data
 		for(int i=0; i<N; i++)
@@ -104,6 +110,7 @@ public class RUCB {
 				LeafLog.m("RUCB","Explore for iteration "+i);
 				
 				
+				// Method 1: highest score (deprecated)
 				//Select the newly observed data with the highest score
 //				ContextData curSelcd = null;
 //				Integer maxScore = 0;
@@ -124,27 +131,70 @@ public class RUCB {
 //				else
 //				{ LeafLog.i("RUCB","No further context data to be checked in exploration");	}
 				
+				
+				//Method 2: Random with high score
 				//Select a random value
 				//Create list with score > 0 and not in list
-				ArrayList<ContextData> filteredCauses = new ArrayList<ContextData>();
+//				ArrayList<ContextData> filteredCauses = new ArrayList<ContextData>();
+//				
+//				for(ContextData nc: newCauses)
+//				{
+//					if(scoreNewCauses.get(nc) > 0.5  && !ret.contains(nc))
+//					{
+//						filteredCauses.add(nc);
+//					}
+//				}
+//				
+//				if(filteredCauses.size() <= 0)
+//				{LeafLog.i("RUCB","No further context data to be checked in exploration");	}
+//				else
+//				{
+//					int randVal = (int)( (Math.random())*filteredCauses.size());
+//					if(randVal == filteredCauses.size())
+//					{randVal--;}
+//					ret.add(filteredCauses.get(randVal));
+//				}
 				
-				for(ContextData nc: newCauses)
+				
+				//Method 3: full random
+//				if(newCauses.size() <= 0)
+//				{LeafLog.i("RUCB","No further context data to be checked in exploration");	}
+//				else
+//				{
+//					int randVal = (int)( (Math.random())*newCauses.size());
+//					if(randVal == newCauses.size())
+//					{randVal--;}
+//					ret.add(newCauses.get(randVal));
+//				}
+				
+				
+				//Method 4: With causal graph
+				ArrayList<ContextData> filteredCdListCg = new ArrayList<ContextData>();
+				//Filter the list
+				for(ContextData cdCg: cdListCg)
 				{
-					if(scoreNewCauses.get(nc) > 0.5  && !ret.contains(nc))
-					{
-						filteredCauses.add(nc);
-					}
+					if(!oldCauses.contains(cdCg) && !ret.contains(cdCg))
+					{ filteredCdListCg.add(cdCg); }
 				}
 				
-				if(filteredCauses.size() <= 0)
-				{LeafLog.i("RUCB","No further context data to be checked in exploration");	}
+				LeafLog.d("RUCB", filteredCdListCg.toString());
+				
+				//Select the first one
+				//If list empty: random
+				if(filteredCdListCg.size() <= 0)
+				{
+					if(newCauses.size() <= 0)
+						{LeafLog.i("RUCB","No further context data to be checked in exploration");	}
+						else
+						{
+							int randVal = (int)( (Math.random())*newCauses.size());
+							if(randVal == newCauses.size())
+							{randVal--;}
+							ret.add(newCauses.get(randVal));
+						}	
+				}
 				else
-				{
-					int randVal = (int)( (Math.random())*filteredCauses.size());
-					if(randVal == filteredCauses.size())
-					{randVal--;}
-					ret.add(filteredCauses.get(randVal));
-				}
+				{ ret.add(filteredCdListCg.get(0)); }
 
 			}
 		}

@@ -3,6 +3,7 @@ package leaf.exec.main;
 
 import java.util.HashMap;
 
+import leaf.causes.CausalGraph;
 import leaf.causes.Extraction;
 import leaf.context.ContextData;
 import leaf.context.LiveSituation;
@@ -18,14 +19,25 @@ public class testMain {
 		
 		//Comment according to exec
 		
-		createSituations();
+		//createSituations();
+		
+		//testCausalGraph();
 		
 		//testExtraction();
 		
 		//testFeedback();
 		
-		testRiskEval();
+		//testRiskEval();
+		
+		testLiveSituationServer();
 	
+	}
+	
+	private static void testLiveSituationServer()
+	{
+		LiveSituation ls = new LiveSituation();
+		
+		ls.run();
 	}
 	
 	private static void createSituations()
@@ -33,11 +45,11 @@ public class testMain {
 		LiveSituation ls = new LiveSituation();
 		
 		ls.addData("Katleen", "isDoing", "Cooking");
-		ls.addData("Katleen", "isLocatedIn", "Salon");
+		ls.addData("Katleen", "isLocatedIn", "Livingroom");
 		//ls.addData("BottleWater1", "inFrontOf", "BottleFanta");		
 		//ls.addRawData("bot1", "hasPosition", "posbot1");
-		ls.addData("BottleWater1", "isLocatedIn", "Salon");
-		ls.addData("BottleFanta", "isLocatedIn", "Salon");
+		ls.addData("BottleWater1", "isLocatedIn", "Livingroom");
+		ls.addData("BottleFanta", "isLocatedIn", "Livingroom");
 		ls.addRawData("bot1pos", "x", "25" );
 		ls.addRawData("bot1pos", "y", "200" );
 		//ls.addRawData("bot2", "hasPosition", "posbot2");
@@ -50,11 +62,11 @@ public class testMain {
 		ls.reset();
 		
 		ls.addData("Katleen", "isDoing", "Cooking");
-		ls.addData("Katleen", "isLocatedIn", "Salon");
+		ls.addData("Katleen", "isLocatedIn", "Livingroom");
 		//ls.addData("BottleWater1", "inFrontOf", "BottleFanta");	
 		//ls.addRawData("bot1", "hasPosition", "posbot1");
-		ls.addData("BottleWater1", "isLocatedIn", "Salon");
-		ls.addData("BottleFanta", "isLocatedIn", "Salon");
+		ls.addData("BottleWater1", "isLocatedIn", "Livingroom");
+		ls.addData("BottleFanta", "isLocatedIn", "Livingroom");
 		ls.addRawData("bot1pos", "x", "25" );
 		ls.addRawData("bot1pos", "y", "200" );
 		//ls.addRawData("bot2", "hasPosition", "posbot2");
@@ -67,11 +79,11 @@ public class testMain {
 		ls.reset();
 		
 		ls.addData("Katleen", "isDoing", "Eating");
-		ls.addData("Katleen", "isLocatedIn", "Salon");
+		ls.addData("Katleen", "isLocatedIn", "Livingroom");
 		//ls.addData("BottleWater1", "inFrontOf", "BottleFanta");
 		//ls.addRawData("bot1", "hasPosition", "posbot1");
-		ls.addData("BottleWater1", "isLocatedIn", "Salon");
-		ls.addData("BottleFanta", "isLocatedIn", "Salon");
+		ls.addData("BottleWater1", "isLocatedIn", "Livingroom");
+		ls.addData("BottleFanta", "isLocatedIn", "Livingroom");
 		ls.addRawData("bot1pos", "x", "25" );
 		ls.addRawData("bot1pos", "y", "200" );
 		//ls.addRawData("bot2", "hasPosition", "posbot2");
@@ -79,7 +91,7 @@ public class testMain {
 		ls.addRawData("bot2pos", "y", "0");
 		
 		ls.save("doStuff");		
-		ls.lastTaskFailed();
+		//ls.lastTaskFailed();
 		
 	}
 	
@@ -108,6 +120,15 @@ public class testMain {
 		
 		//ls.getTaskCurrentRisk("doStuff");
 		System.out.println( ls.getCurrentTaskRiskStat("doStuff"));
+	}
+	
+	private static void testCausalGraph()
+	{
+		CausalGraph cg = new CausalGraph("doStuff");
+		
+		cg.construct();
+		
+		System.out.println( cg.listCauses(new ContextData("doStuff", "outcome", "failure")) );
 	}
 	
 }

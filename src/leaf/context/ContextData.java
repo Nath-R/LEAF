@@ -106,7 +106,7 @@ public class ContextData {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((belief == null) ? 0 : belief.hashCode());
+		result = prime * result + ((value == null) ? 0 : value.hashCode());
 		result = prime * result + ((entity == null) ? 0 : entity.hashCode());
 		result = prime * result + ((property == null) ? 0 : property.hashCode());
 		return result;

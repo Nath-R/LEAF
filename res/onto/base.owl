@@ -338,7 +338,7 @@
 :bed1 rdf:type :Bedroom ,
                owl:NamedIndividual ;
       
-      :hasName "bedroom" .
+      :hasName "Bedroom" .
 
 
 
@@ -428,7 +428,7 @@
 :kit1 rdf:type :Kitchen ,
                owl:NamedIndividual ;
       
-      :hasName "kitchen" .
+      :hasName "Kitchen" .
 
 
 
@@ -437,7 +437,7 @@
 :lr1 rdf:type :Livingroom ,
               owl:NamedIndividual ;
      
-     :hasName "livingroom" .
+     :hasName "Livingroom" .
 
 
 
@@ -464,7 +464,7 @@
 :off1 rdf:type :Office ,
                owl:NamedIndividual ;
       
-      :hasName "office" .
+      :hasName "Office" .
 
 
 
@@ -508,6 +508,15 @@
                   owl:NamedIndividual ;
          
          :hasName "Working" .
+
+
+
+###  http://res/onto/onto.owl#eating
+
+:eating rdf:type :Activity ,
+                 owl:NamedIndividual ;
+        
+        :hasName "Eating" .
 
 
 

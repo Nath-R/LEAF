@@ -59,7 +59,8 @@ public class LiveSituation extends Thread {
 		
 		LeafLog.i("LiveSituation", "Starting context data acquisition process...");
 
-		int port = 4032;
+		//int port = 4032;
+		int port = 5002;
 		DatagramSocket serverSocket = null;
         
 		try {
@@ -75,7 +76,7 @@ public class LiveSituation extends Thread {
 				//Receiving data
 				DatagramPacket receivedPacket = new DatagramPacket(receivedData, receivedData.length);
 				
-					serverSocket.receive(receivedPacket);
+				serverSocket.receive(receivedPacket);
 				
 				
 				String dataStr = new String( receivedPacket.getData() );
@@ -98,11 +99,18 @@ public class LiveSituation extends Thread {
 				else
 				{
 					//Writing transform data into RDF format
-					String cdStr = dataStr.split(" ")[3];
+//					String cdStr = dataStr.split(" ")[3];
+//					
+//					String[] cds = cdStr.replace(")", "").split("\\(|,");
+//					System.out.println(dataStr);
+//					addData(cds[1].trim(), cds[0].trim(), cds[2].trim());
 					
-					String[] cds = cdStr.replace(")", "").split("\\(|,");
-					System.out.println(dataStr);
+					//Format: subj pred obj truth 
+					//(Truth not dealt with)
+					String[] cds = dataStr.split(" ");
+					System.out.println(cds);
 					addData(cds[1].trim(), cds[0].trim(), cds[2].trim());
+					
 				}           
 	           
 	        }

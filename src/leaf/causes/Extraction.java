@@ -125,7 +125,7 @@ public class Extraction {
 		Double risk = assessRisk(task, dbm);
 		LeafLog.d("Extraction", "nbrSitFail: "+nbrSFail+"   risk: "+risk);
 		
-		ArrayList<ContextData> dataToAsk = RUCB.selection(risk, cdBelief, cdNoBelief, scores, NUMQUESTUSER, nbrSFail);
+		ArrayList<ContextData> dataToAsk = RUCB.selection(risk, task, cdBelief, cdNoBelief, scores, NUMQUESTUSER, nbrSFail);
 //		ArrayList<ContextData> dataToAsk = RandomArmedBandit.selection(risk, cdBelief, cdNoBelief, scores, NUMQUESTUSER, nbrSFail);
 		
 		LeafLog.i("Extraction", "Selected context data to check:");
@@ -296,6 +296,11 @@ public class Extraction {
 		    	else
 		    	{
 		    		LeafLog.i("Feedback", cd + "is not a failure cause (negative feedback from user)");
+		    		//Store it anyway
+		    		//TODO -> different list
+		    		cd.setBelief(reward);
+			    	cd.setNbrFeedback(1);
+			    	dbm.insertContextData(task, cd);
 		    	}
 		    } 	
 		}
